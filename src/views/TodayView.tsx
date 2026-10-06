@@ -116,7 +116,6 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
               const isDone = completedSteps.includes(step.id);
               const isCurrentNext = !isDone && nextUnfinishedStep?.id === step.id;
 
-              // In minimal density or hard day mode, hide completed or far ahead steps if user wants
               if (settings.density === 'minimal' && !isCurrentNext && !isDone) {
                 if (idx > (activeSteps.indexOf(nextUnfinishedStep || activeSteps[0]) + 1)) return null;
               }
@@ -140,10 +139,11 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
                   </label>
 
                   <div className="step-actions">
-                    <span className="estimate-badge">{t.task.estimate(step.minutes)}</span>
+                    <span className="estimate-badge">⏱️ {t.task.estimate(step.minutes)}</span>
                     {!isDone && (
                       <button
-                        className="btn btn--sm btn--soft"
+                        type="button"
+                        className="btn btn--sm btn--primary"
                         onClick={() => onStartFocus(step.id, step.label[lang])}
                       >
                         🎯 {t.focus.start}
@@ -164,7 +164,8 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
           {activeTask.lessonId && (
             <div className="task-footer">
               <button
-                className="btn btn--ghost"
+                type="button"
+                className="btn btn--soft btn--open-lesson"
                 onClick={() => onOpenLesson(activeTask.lessonId!)}
               >
                 📖 {t.task.openLesson}
