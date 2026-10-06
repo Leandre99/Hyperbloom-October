@@ -12,6 +12,7 @@ export default function FocusView({ stepLabel, onExit }: Props) {
   const t = useT();
   const f = t.focus;
   const { settings } = useSettings();
+  const isFr = settings.lang === 'fr';
 
   const [mode, setMode] = useState<'work' | 'break'>('work');
   const [workDuration, setWorkDuration] = useState(25); // minutes
@@ -40,7 +41,6 @@ export default function FocusView({ stepLabel, onExit }: Props) {
       timerRef.current = window.setInterval(() => {
         setSecondsLeft((prev) => {
           if (prev <= 1) {
-            // Sound or visual notify
             if (mode === 'work') {
               setSessionsCompleted((c) => c + 1);
               setMode('break');
@@ -78,71 +78,87 @@ export default function FocusView({ stepLabel, onExit }: Props) {
 
   return (
     <div className="view focus-view">
+      {/* Top Header with Back button and progress */}
       <div className="focus-top-bar">
-        <button className="btn btn--ghost" onClick={onExit} aria-label={f.exit}>
+        <button type="button" className="btn btn--ghost" onClick={onExit} aria-label={f.exit}>
           ← {f.exit}
         </button>
-        <span className="sessions-badge">🌱 {f.sessions(sessionsCompleted)}</span>
+
+        <div className="focus-header-meta">
+          <span className="sessions-badge">
+            🌱 {sessionsCompleted} {isFr ? `session${sessionsCompleted > 1 ? 's' : ''} terminée${sessionsCompleted > 1 ? 's' : ''}` : `focus session${sessionsCompleted > 1 ? 's' : ''}`}
+          </span>
+        </div>
       </div>
 
-      <div className="focus-center-stage">
-        {stepLabel ? (
-          <div className="focus-step-card card">
-            <span className="focus-step-pill">{f.currentStep}</span>
-            <h2 className="focus-step-title">{stepLabel}</h2>
-          </div>
-        ) : (
-          <p className="muted-text">{f.noStep}</p>
-        )}
-
-        <div className="timer-wrapper">
-          <svg className="timer-svg" viewBox="0 0 200 200" aria-hidden="true">
-            <circle className="timer-circle-bg" cx="100" cy="100" r="90" />
-            <circle
-              className="timer-circle-progress"
-              cx="100"
-              cy="100"
-              r="90"
-              strokeDasharray={565.48}
-              strokeDashoffset={565.48 * (1 - progressRatio)}
-            />
-          </svg>
-
-          <div className="timer-content">
-            <span className="timer-mode-badge">
-              {mode === 'work' ? `🎯 ${f.working}` : `🍃 ${f.breakTime}`}
+      <div className="focus-layout-grid">
+        {/* Left Column: Pomodoro & Active Step */}
+        <section className="card focus-main-card">
+          {/* Active Step Banner */}
+          <div className="focus-step-banner">
+            <span className="badge badge--accent">
+              {isFr ? '🎯 Tâche en cours' : '🎯 Current Focus Step'}
             </span>
-            <div className="timer-digits" aria-live="polite">
-              {timeFormatted}
+            <h2 className="focus-step-heading">
+              {stepLabel || (isFr ? 'Session de travail libre' : 'Open Focus Session')}
+            </h2>
+            {!stepLabel && (
+              <p className="focus-step-hint">
+                {isFr
+                  ? 'Astuce : Clique sur « 🎯 Démarrer » depuis une micro-étape de la page d’accueil pour l’importer ici.'
+                  : 'Tip: Click "🎯 Start" next to any micro-step on Today to import it here.'}
+              </p>
+            )}
+          </div>
+
+          {/* Big Timer Circle */}
+          <div className="timer-wrapper">
+            <svg className="timer-svg" viewBox="0 0 200 200" aria-hidden="true">
+              <circle className="timer-circle-bg" cx="100" cy="100" r="88" />
+              <circle
+                className="timer-circle-progress"
+                cx="100"
+                cy="100"
+                r="88"
+                strokeDasharray={552.92}
+                strokeDashoffset={552.92 * (1 - progressRatio)}
+              />
+            </svg>
+
+            <div className="timer-content">
+              <span className={`timer-mode-tag ${mode === 'work' ? 'work' : 'break'}`}>
+                {mode === 'work' ? (isFr ? '⚡ Temps d’effort' : '⚡ Focus Time') : (isFr ? '🍃 Pause respiration' : '🍃 Rest Break')}
+              </span>
+              <div className="timer-digits" aria-live="polite">
+                {timeFormatted}
+              </div>
+              <span className="timer-subtext">
+                {isActive ? (isFr ? 'Chrono en cours...' : 'In progress...') : (isFr ? 'En pause' : 'Paused')}
+              </span>
             </div>
-            <span className="visually-hidden">{f.timeLeft(minutes, seconds)}</span>
           </div>
-        </div>
 
-        {/* Breathing Guide Circle during Breaks */}
-        {mode === 'break' && (
-          <div className={`breathe-guide ${breathePhase} ${settings.motion === 'reduced' ? 'reduced' : ''}`}>
-            <span className="breathe-text">
-              {breathePhase === 'in' ? `🌬️ ${f.breatheIn}` : `💨 ${f.breatheOut}`}
-            </span>
+          {/* Action Buttons */}
+          <div className="timer-controls">
+            <button
+              type="button"
+              className={`btn btn--lg ${isActive ? 'btn--accent' : 'btn--primary'}`}
+              onClick={toggleTimer}
+            >
+              {isActive ? (isFr ? '⏸️ Mettre en pause' : '⏸️ Pause') : (isFr ? '▶️ Lancer le chrono' : '▶️ Start Timer')}
+            </button>
+            <button type="button" className="btn btn--lg btn--ghost" onClick={resetTimer}>
+              ↺ {isFr ? 'Réinitialiser' : 'Reset'}
+            </button>
           </div>
-        )}
 
-        <div className="timer-controls">
-          <button className="btn btn--primary btn--lg" onClick={toggleTimer}>
-            {isActive ? f.pause : f.start}
-          </button>
-          <button className="btn btn--ghost btn--lg" onClick={resetTimer}>
-            {f.reset}
-          </button>
-        </div>
-
-        {/* Custom duration pills */}
-        {!isActive && (
-          <div className="duration-settings">
-            <div className="duration-group">
-              <label>{f.focusLength}</label>
-              <div className="choice__options">
+          {/* Quick presets (when paused) */}
+          {!isActive && (
+            <div className="duration-settings">
+              <span className="duration-label">
+                {isFr ? 'Régler la durée :' : 'Set duration:'}
+              </span>
+              <div className="duration-pills">
                 {[15, 20, 25, 30].map((d) => (
                   <button
                     key={d}
@@ -153,16 +169,45 @@ export default function FocusView({ stepLabel, onExit }: Props) {
                       if (mode === 'work') setSecondsLeft(d * 60);
                     }}
                   >
-                    {f.min(d)}
+                    {d} min
                   </button>
                 ))}
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Sensory Sound Machine */}
-        <SoundMachine />
+          {/* Breathing Guide during break */}
+          {mode === 'break' && (
+            <div className={`breathe-guide ${breathePhase} ${settings.motion === 'reduced' ? 'reduced' : ''}`}>
+              <span className="breathe-text">
+                {breathePhase === 'in' ? `🌬️ ${f.breatheIn}` : `💨 ${f.breatheOut}`}
+              </span>
+            </div>
+          )}
+        </section>
+
+        {/* Right Column: Sensory Sound Machine */}
+        <aside className="focus-sidebar">
+          <SoundMachine />
+
+          <div className="card focus-tips-card">
+            <h3>💡 {isFr ? 'Conseils Anti-Distraction' : 'Anti-Overload Tips'}</h3>
+            <ul className="focus-tips-list">
+              <li>
+                <strong>{isFr ? 'Une seule fenêtre' : 'Single tab only'}</strong> :{' '}
+                {isFr
+                  ? 'Ferme ou masque tous les autres onglets pendant cette session.'
+                  : 'Close or hide other browser tabs during this session.'}
+              </li>
+              <li>
+                <strong>{isFr ? 'Pardon aux pauses' : 'Take real breaks'}</strong> :{' '}
+                {isFr
+                  ? 'Quand le chrono sonne, lève les yeux de l’écran et respire avec la bulle.'
+                  : 'Look away from the screen when the break bell chimes.'}
+              </li>
+            </ul>
+          </div>
+        </aside>
       </div>
     </div>
   );
