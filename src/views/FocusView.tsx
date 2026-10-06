@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useT } from '../i18n';
 import { useSettings } from '../settings/SettingsContext';
+import SoundMachine from '../components/SoundMachine';
 
 interface Props {
   stepLabel?: string;
@@ -159,6 +160,9 @@ export default function FocusView({ stepLabel, onExit }: Props) {
             </div>
           </div>
         )}
+
+        {/* Sensory Sound Machine */}
+        <SoundMachine />
       </div>
     </div>
   );

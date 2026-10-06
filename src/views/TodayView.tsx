@@ -4,6 +4,7 @@ import { useSettings } from '../settings/SettingsContext';
 import { useT } from '../i18n';
 import MoodCheckIn from '../components/MoodCheckIn';
 import GrowthGarden from '../components/GrowthGarden';
+import AddTaskModal from '../components/AddTaskModal';
 
 interface Props {
   onStartFocus: (stepId: string, label: string) => void;
@@ -14,6 +15,17 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
   const t = useT();
   const { settings } = useSettings();
   const lang = settings.lang;
+
+  const [taskList, setTaskList] = useState<Task[]>(() => {
+    try {
+      const saved = localStorage.getItem('calmly.tasks');
+      return saved ? JSON.parse(saved) : tasks;
+    } catch {
+      return tasks;
+    }
+  });
+
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Stored completed steps
   const [completedSteps, setCompletedSteps] = useState<string[]>(() => {
@@ -32,6 +44,12 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
 
   const [showLater, setShowLater] = useState(false);
 
+  const handleAddTask = (newTask: Task) => {
+    const updated = [newTask, ...taskList];
+    setTaskList(updated);
+    localStorage.setItem('calmly.tasks', JSON.stringify(updated));
+  };
+
   const toggleStep = (stepId: string) => {
     setCompletedSteps((prev) => {
       const next = prev.includes(stepId) ? prev.filter((id) => id !== stepId) : [...prev, stepId];
@@ -41,7 +59,7 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
   };
 
   // Determine current active task and next step
-  const activeTask: Task = tasks[0];
+  const activeTask: Task = taskList[0] || tasks[0];
   const activeSteps = activeTask.steps;
   const doneCount = activeSteps.filter((s) => completedSteps.includes(s.id)).length;
   const isTaskComplete = doneCount === activeSteps.length;
@@ -51,11 +69,16 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
 
   return (
     <div className="view today-view">
-      <header className="page-header">
-        <h1>{t.today.greeting(t.today.defaultName)}</h1>
-        <p className="lead">{t.today.subtitle}</p>
-        {isHardDay && <div className="banner banner--calm">🌱 {t.today.hardDayOn}</div>}
+      <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <h1>{t.today.greeting(t.today.defaultName)}</h1>
+          <p className="lead">{t.today.subtitle}</p>
+        </div>
+        <button className="btn btn--primary" onClick={() => setIsAddModalOpen(true)}>
+          ➕ Add & Break Down Task
+        </button>
       </header>
+      {isHardDay && <div className="banner banner--calm">🌱 {t.today.hardDayOn}</div>}
 
       {/* Energy Check-in */}
       <MoodCheckIn onLevelSelected={(lvl) => setEnergyLevel(lvl)} />
@@ -153,6 +176,13 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
 
       {/* Gentle Growth Garden */}
       <GrowthGarden completedCount={completedSteps.length} />
+
+      {/* Task Creation Modal */}
+      <AddTaskModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAddTask={handleAddTask}
+      />
 
       {/* Later Tasks (Collapsible to prevent overwhelm) */}
       {!isHardDay && (
