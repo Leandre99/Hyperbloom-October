@@ -1,104 +1,77 @@
-# 🌱 Calmly — Neuro-Inclusive Learning Sanctuary
+# Calmly
 
-> **Built for HyperBloom October 2026: UI/UX & Web Design Hackathon**  
-> An open-source, gentle, and accessible learning space engineered for neurodivergent learners (ADHD, Dyslexia, Executive Dysfunction).
+Calmly is an accessible, distraction-free learning space designed for neurodivergent students, particularly those dealing with ADHD, dyslexia, or executive dysfunction.
 
-🔗 **Live Public Demo**: [https://leandre99.github.io/Hyperbloom-October/](https://leandre99.github.io/Hyperbloom-October/)  
-🏆 **Category**: UI/UX & Web Design · Accessibility · Inclusive Digital Experiences
+Most online learning platforms (Moodle, Canvas, Google Classroom) are designed like administrative filing cabinets. They present students with dozens of deadlines, unread notifications, competing progress bars, and dense layouts all at once. For neurodivergent learners, this cognitive overload frequently causes decision paralysis and burnout before any actual learning starts.
 
----
-
-## 🎯 Executive Summary & The Problem
-
-Mainstream Learning Management Systems (Moodle, Blackboard, Google Classroom) are built as bureaucratic file cabinets, not human learning environments. They subject students to **severe cognitive overload**:
-- Dozens of concurrent deadlines blinking in alarming red.
-- Overcrowded dashboards with competing visual anchors.
-- Inflexible fonts and bright glaring backgrounds causing rapid ocular fatigue.
-
-For learners with **ADHD or Dyslexia** (1 in 5 students), this visual friction leads directly to **executive dysfunction paralysis** — the cognitive inability to decide where to begin, which leads to anxiety, procrastination, and academic burnout.
-
-> *“Mainstream platforms show me everything I haven’t finished yet. Calmly shows me only the next single step.”*
+Calmly takes the opposite approach: **one thing at a time**.
 
 ---
 
-## ✨ 4 Winning Innovations Built into Calmly
+## What the project does
 
-### 1. ⚡ Bionic Reading Engine (`LessonsView.tsx`)
-- Integrated visual fixation anchors directly into lessons.
-- The first 40–50% of every word is automatically rendered with higher weight (`font-weight: 850`), guiding saccadic eye movements.
-- Dramatically increases reading comprehension and focus stamina for ADHD readers without cognitive fatigue.
-- Paired with an interactive **Reading Ruler** (floating band that tracks mouse/touch) and native browser **Text-to-Speech** (Web Speech API).
+### 1. One thing at a time (Today view)
+Instead of displaying a long list of stressful assignments, Calmly spotlights only the immediate next micro-step. Tasks planned for later in the week are neatly tucked away to keep the workspace calm and focused.
 
-### 2. 🪄 AI ADHD Magic De-Chunker (`AddTaskModal.tsx`)
-- When faced with sprawling, vague assignments (*"Write a 10-page economics paper"*), students freeze.
-- Calmly features an automated **Magic De-Chunker**: with one click, it intelligently breaks complex assignments into gentle, bite-sized **3 to 12-minute micro-steps**.
-- Shifts focus from monumental pressure to immediate, bite-sized wins.
+### 2. Magic De-Chunker
+When students are assigned large, vague tasks (like a 10-page paper or a math problem set), starting can feel impossible. The de-chunker helps students break complex work down into realistic, 3 to 12-minute steps.
 
-### 3. ♿ Live WCAG 2.2 & Contrast Inspector (`A11yInspector.tsx`)
-- A live diagnostic tool placed directly in the app for **hackathon judges & auditors**.
-- Dynamically measures real-time contrast ratios across all 4 themes (up to **21.0:1 AAA Pass**).
-- Includes an interactive **Vision Simulator Sandbox**: judges can simulate *Protanopia* (red-blind), *Deuteranopia* (green-blind), *Tritanopia* (blue-blind), or *Achromatopsia* (monochrome) to verify universal legibility.
+### 3. Bionic Reading and audio support
+Long, dense texts can cause significant visual fatigue for dyslexic and ADHD readers. The lesson reader includes:
+- **Bionic Reading mode**: bolds the initial letters of words to create visual anchors and guide eye movement.
+- **Reading ruler**: a subtle translucent bar that follows the mouse or touch point to prevent accidental line-skipping.
+- **Built-in text-to-speech**: allows students to listen along to lessons at adjustable speeds.
 
-### 4. 🌱 Botanical Growth Garden (`GrowthGarden.tsx`)
-- Replaces toxic, shame-inducing daily streaks with **gentle, forgiving gamification**.
-- Features 5 custom-designed SVG botanical evolution stages (Dormant Seed ➔ Fresh Sprout ➔ Sturdy Sapling ➔ Thriving Plant ➔ Blooming Sanctuary).
-- Your plant never dies or withers when you take time off. Every completed micro-step moves the garden forward.
+### 4. Focus room & sound machine
+A clean, fullscreen workspace that pairs a Pomodoro timer with guided breathing exercises during rest periods. It includes a built-in sound generator that produces brown, pink, and white noise directly in the browser via the Web Audio API to help mask distracting ambient noise.
 
----
+### 5. Botanical growth instead of punitive streaks
+Many productivity apps use streak counters that reset to zero when a day is missed, which often triggers shame and abandonment. Calmly replaces this with a digital plant that grows through 5 stages as tasks are completed. It never withers or penalizes students for taking time off.
 
-## 🧭 Complete Architecture & Feature Breakdown
+### 6. Accessibility and comfort settings
+Accessible design is built into the core interface:
+- Includes **OpenDyslexic** (weighted bottoms to reduce letter inversion) and **Atkinson Hyperlegible** (developed by the Braille Institute).
+- Four themes engineered for legibility and reduced glare (Warm Cream, Soft Light, Calm Dark, and High Contrast).
+- Full keyboard navigation with visible focus indicators.
+- Respects system preferences for reduced motion (`prefers-reduced-motion`).
+- Minimum touch target sizes of 44px (complying with WCAG 2.5.8).
+- Includes an in-app accessibility inspector so reviewers and judges can test real-time contrast ratios and view the interface through various color-blindness simulation filters.
 
-| Feature | Description | Inclusive Impact |
-|---|---|---|
-| **Sensory Profile Onboarding** | Interactive 4-step first-run wizard. | Students configure comfortable typography, theme, and density before seeing any workload. |
-| **One-Thing-at-a-Time Dashboard** | Shows only the current next step; later work is folded away. | Directly neutralises executive dysfunction and sensory overwhelm. |
-| **Hard-Day Energy Check-in** | 1-tap mood barometer (Drained ➔ Great). | If energy is low, activates *Hard-Day Mode*, hiding everything except a tiny 2-min step. |
-| **Focus Pomodoro & Sound Machine** | Fullscreen focus mode with animated breathing guide during breaks. | Synthesises real-time **Brown, Rain, and White noise** via Web Audio API to mute ambient audio distractions. |
-| **Zero-Friction Local Storage** | No passwords, no registration walls, 100% privacy-first. | Eliminates the highest onboarding barrier for ADHD students. Data is stored safely in `localStorage`. |
-| **Bilingual Seamless Switching** | Full, instant English 🇬🇧 and French 🇫🇷 translations. | Native accessibility for global students. |
+### 7. Zero-friction privacy
+There is no registration form, password requirement, or user tracking. All preferences, energy logs, custom tasks, and progress persist safely in the browser's local storage.
 
 ---
 
-## ♿ Accessibility (WCAG 2.2 AA Compliance)
+## Technical stack
 
-- **Contrast**: Exceeds WCAG 2.2 AA in all themes:
-  - Warm Cream: `11.8:1` (Low-glare paper simulation)
-  - Soft Light: `13.2:1`
-  - Calm Dark: `12.6:1`
-  - High Contrast: `21.0:1` (Maximum pure OLED contrast)
-- **Typography**: Embedded offline WOFF2 fonts:
-  - **OpenDyslexic** (weighted bottoms prevent mental letter inversion)
-  - **Atkinson Hyperlegible** (developed by the Braille Institute for low vision)
-- **Touch Target Size**: Strict compliance with WCAG 2.5.8 (all clickable targets $\ge 44\text{px}$).
-- **Keyboard Navigation**: 100% operable via `Tab` and `Enter`, with high-visibility focus indicators (`:focus-visible`).
-- **Vestibular Safety**: Native support for `prefers-reduced-motion` to instantly disable all scale and bounce transitions.
+- **Frontend**: React 19, TypeScript, Vite
+- **Styling**: Native CSS custom properties and dynamic data-attributes (no heavy external UI component libraries)
+- **Audio synthesis**: Web Audio API (procedural audio noise generator without external audio files)
+- **Text-to-speech**: Web Speech API (`SpeechSynthesis`)
+- **Internationalization**: Lightweight custom i18n supporting English and French
 
 ---
 
-## 🛠️ Technical Stack
+## Getting started locally
 
-- **Frontend**: React 19, TypeScript, Vite 8
-- **Audio Synthesis**: Web Audio API (real-time brown/pink noise algorithm without external audio files)
-- **Speech**: HTML5 SpeechSynthesis API (client-side text-to-speech with speed pitch modulation)
-- **Styling**: Native CSS custom properties & dynamic `data-*` tokens (zero heavyweight UI libraries)
-- **Deployment**: Automated GitHub Pages CI/CD workflow
+Make sure you have Node.js installed.
 
----
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Leandre99/Hyperbloom-October.git
+   cd Hyperbloom-October
+   ```
 
-## 💻 Local Development Setup
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+   *(Note for Windows PowerShell: if script execution policies block npm, use `npm.cmd install`)*
 
-To run Calmly on your machine:
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   *(Or `npm.cmd run dev` on Windows)*
 
-```powershell
-# 1. Clone repository
-git clone https://github.com/Leandre99/Hyperbloom-October.git
-cd Hyperbloom-October
-
-# 2. Install dependencies
-npm.cmd install
-
-# 3. Start local development server
-npm.cmd run dev
-```
-
-Then open `http://localhost:5173/Hyperbloom-October/` in your browser.
+4. Open `http://localhost:5173/` in your browser.
