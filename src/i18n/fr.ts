@@ -8,6 +8,7 @@ export const fr: Dict = {
     today: "Aujourd'hui",
     lessons: 'Leçons',
     focus: 'Focus',
+    howItWorks: 'Comment ça marche',
     caseStudy: 'Étude de cas',
     settings: 'Réglages de confort',
     mainNav: 'Navigation principale',

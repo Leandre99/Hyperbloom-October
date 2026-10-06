@@ -7,10 +7,11 @@ import TodayView from './views/TodayView';
 import FocusView from './views/FocusView';
 import LessonsView from './views/LessonsView';
 import CaseStudyView from './views/CaseStudyView';
+import HowItWorksView from './views/HowItWorksView';
 import './styles/tokens.css';
 import './styles/base.css';
 
-type Tab = 'today' | 'lessons' | 'focus' | 'caseStudy';
+type Tab = 'today' | 'lessons' | 'focus' | 'howItWorks' | 'caseStudy';
 
 function CalmlyApp() {
   const t = useT();
@@ -41,10 +42,6 @@ function CalmlyApp() {
   const handleOpenLesson = (lessonId: string) => {
     setSelectedLessonId(lessonId);
     setCurrentTab('lessons');
-  };
-
-  const handleToggleLang = () => {
-    update({ lang: settings.lang === 'en' ? 'fr' : 'en' });
   };
 
   return (
@@ -98,6 +95,14 @@ function CalmlyApp() {
           </button>
           <button
             type="button"
+            className={`nav-btn ${currentTab === 'howItWorks' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('howItWorks')}
+            aria-current={currentTab === 'howItWorks' ? 'page' : undefined}
+          >
+            {t.nav.howItWorks}
+          </button>
+          <button
+            type="button"
             className={`nav-btn ${currentTab === 'caseStudy' ? 'active' : ''}`}
             onClick={() => setCurrentTab('caseStudy')}
             aria-current={currentTab === 'caseStudy' ? 'page' : undefined}
@@ -146,6 +151,12 @@ function CalmlyApp() {
         {currentTab === 'lessons' && <LessonsView initialLessonId={selectedLessonId} />}
         {currentTab === 'focus' && (
           <FocusView stepLabel={focusStepLabel} onExit={() => setCurrentTab('today')} />
+        )}
+        {currentTab === 'howItWorks' && (
+          <HowItWorksView
+            onGoToToday={() => setCurrentTab('today')}
+            onOpenSettings={() => setIsSettingsOpen(true)}
+          />
         )}
         {currentTab === 'caseStudy' && <CaseStudyView />}
       </main>

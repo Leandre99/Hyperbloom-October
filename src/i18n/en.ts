@@ -6,6 +6,7 @@ export const en = {
     today: 'Today',
     lessons: 'Lessons',
     focus: 'Focus',
+    howItWorks: 'How it works',
     caseStudy: 'Case study',
     settings: 'Comfort settings',
     mainNav: 'Main navigation',

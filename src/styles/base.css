@@ -905,6 +905,82 @@ p { margin-top: 0; margin-bottom: 1rem; }
 }
 
 
+/* ============================================================
+   How It Works Guide Styling
+   ============================================================ */
+
+.how-it-works-view {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.steps-flow-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.step-flow-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.75rem 1.5rem;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  transition: all var(--dur-1) var(--ease);
+}
+.step-flow-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.step-flow-number {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--surface-2);
+  user-select: none;
+  line-height: 1;
+}
+
+.step-flow-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.step-flow-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+.step-flow-content p {
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.zero-account-banner {
+  background: linear-gradient(135deg, var(--surface), var(--surface-2));
+  border: 1px dashed var(--accent);
+  padding: 1.75rem 2rem;
+}
+.zero-account-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.zero-account-icon {
+  font-size: 2.4rem;
+}
+.zero-account-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
 /* Sound Machine */
 .sound-machine-card {
   width: 100%;
