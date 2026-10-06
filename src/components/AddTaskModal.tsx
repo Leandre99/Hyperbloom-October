@@ -10,6 +10,7 @@ interface Props {
 
 export default function AddTaskModal({ isOpen, onClose, onAddTask }: Props) {
   const t = useT();
+  const a = t.addTask;
   const [title, setTitle] = useState('');
   const [course, setCourse] = useState('');
   const [rawText, setRawText] = useState('');
@@ -35,11 +36,11 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask }: Props) {
             minutes: 5,
             label: { en: line, fr: line },
           }))
-        : [
-            { id: `step-${Date.now()}-1`, minutes: 3, label: { en: 'Read & understand instructions', fr: 'Lire et comprendre les consignes' } },
-            { id: `step-${Date.now()}-2`, minutes: 10, label: { en: 'Draft first section', fr: 'Rédiger la première partie' } },
-            { id: `step-${Date.now()}-3`, minutes: 5, label: { en: 'Review and finish', fr: 'Relire et finaliser' } },
-          ];
+        : a.defaultSteps.map((stepText, idx) => ({
+            id: `step-${Date.now()}-${idx}`,
+            minutes: idx === 0 ? 3 : idx === 1 ? 10 : 5,
+            label: { en: stepText, fr: stepText },
+          }));
 
     const newTask: Task = {
       id: `task-${Date.now()}`,
@@ -62,25 +63,23 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask }: Props) {
     <div className="onboarding-overlay" role="dialog" aria-modal="true" aria-labelledby="add-task-title">
       <div className="onboarding-card card">
         <header className="onboarding-header">
-          <h2 id="add-task-title">✨ Add & Break Down a Task</h2>
-          <button className="icon-btn" onClick={onClose} aria-label="Close">
+          <h2 id="add-task-title">✨ {a.modalTitle}</h2>
+          <button className="icon-btn" onClick={onClose} aria-label={a.cancel}>
             ✕
           </button>
         </header>
 
         <form onSubmit={handleSubmit} className="onboarding-body">
-          <p className="muted-text">
-            Feeling overwhelmed? Enter what you need to do, and Calmly will chunk it into manageable, small micro-steps.
-          </p>
+          <p className="muted-text">{a.intro}</p>
 
           <div className="field">
-            <label htmlFor="task-title">Task or Assignment Title *</label>
+            <label htmlFor="task-title">{a.titleLabel}</label>
             <input
               id="task-title"
               className="text-input"
               type="text"
               required
-              placeholder="e.g. History essay, Lab report..."
+              placeholder={a.titlePlaceholder}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -88,18 +87,18 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask }: Props) {
 
           <div className="field-row">
             <div className="field" style={{ flex: 1 }}>
-              <label htmlFor="task-course">Course / Subject</label>
+              <label htmlFor="task-course">{a.courseLabel}</label>
               <input
                 id="task-course"
                 className="text-input"
                 type="text"
-                placeholder="e.g. History, Math..."
+                placeholder={a.coursePlaceholder}
                 value={course}
                 onChange={(e) => setCourse(e.target.value)}
               />
             </div>
             <div className="field" style={{ width: '130px' }}>
-              <label htmlFor="task-icon">Icon</label>
+              <label htmlFor="task-icon">{a.iconLabel}</label>
               <select
                 id="task-icon"
                 className="select-input"
@@ -116,14 +115,12 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask }: Props) {
           </div>
 
           <div className="field">
-            <label htmlFor="task-steps">
-              Break down steps (Optional: 1 line = 1 step)
-            </label>
+            <label htmlFor="task-steps">{a.stepsLabel}</label>
             <textarea
               id="task-steps"
               className="textarea-input"
               rows={3}
-              placeholder="Paste instructions or leave blank to auto-generate 3 calm steps..."
+              placeholder={a.stepsPlaceholder}
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
             />
@@ -131,10 +128,10 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask }: Props) {
 
           <footer className="onboarding-footer" style={{ marginTop: '1rem' }}>
             <button type="button" className="btn btn--ghost" onClick={onClose}>
-              Cancel
+              {a.cancel}
             </button>
             <button type="submit" className="btn btn--primary">
-              🌱 Create & Chunk Task
+              🌱 {a.submit}
             </button>
           </footer>
         </form>

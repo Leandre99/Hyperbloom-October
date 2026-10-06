@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
+import { useT } from '../i18n';
 
 export default function SoundMachine() {
+  const t = useT();
+  const sm = t.soundMachine;
   const [isPlaying, setIsPlaying] = useState(false);
   const [soundType, setSoundType] = useState<'brown' | 'rain' | 'white'>('brown');
   const [volume, setVolume] = useState(0.2);
@@ -100,8 +103,8 @@ export default function SoundMachine() {
       <div className="sound-machine-header">
         <span className="sound-icon" aria-hidden="true">🎧</span>
         <div>
-          <h3>Focus Sound Generator</h3>
-          <p className="muted-text">Synthesised brown/pink noise to mask background distractions (Web Audio API).</p>
+          <h3>{sm.title}</h3>
+          <p className="muted-text">{sm.desc}</p>
         </div>
       </div>
 
@@ -112,24 +115,24 @@ export default function SoundMachine() {
           onClick={toggleSound}
           aria-pressed={isPlaying}
         >
-          {isPlaying ? '⏸️ Mute Sound' : '▶️ Play Brown Noise'}
+          {isPlaying ? `⏸️ ${sm.mute}` : `▶️ ${sm.play}`}
         </button>
 
         <div className="choice__options">
-          {(['brown', 'rain', 'white'] as const).map((t) => (
+          {(['brown', 'rain', 'white'] as const).map((type) => (
             <button
-              key={t}
+              key={type}
               type="button"
-              className={`choice-pill ${soundType === t ? 'active' : ''}`}
-              onClick={() => setSoundType(t)}
+              className={`choice-pill ${soundType === type ? 'active' : ''}`}
+              onClick={() => setSoundType(type)}
             >
-              {t === 'brown' ? '🌊 Brown (Deep)' : t === 'rain' ? '🌧️ Rain' : '💨 White'}
+              {sm.types[type]}
             </button>
           ))}
         </div>
 
         <div className="volume-slider">
-          <label htmlFor="sound-vol">Volume: {Math.round(volume * 100)}%</label>
+          <label htmlFor="sound-vol">{sm.volume}: {Math.round(volume * 100)}%</label>
           <input
             id="sound-vol"
             type="range"

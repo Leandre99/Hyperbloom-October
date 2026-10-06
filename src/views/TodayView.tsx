@@ -75,7 +75,7 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
           <p className="lead">{t.today.subtitle}</p>
         </div>
         <button className="btn btn--primary" onClick={() => setIsAddModalOpen(true)}>
-          ➕ Add & Break Down Task
+          ➕ {t.addTask.btn}
         </button>
       </header>
       {isHardDay && <div className="banner banner--calm">🌱 {t.today.hardDayOn}</div>}
