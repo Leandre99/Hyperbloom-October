@@ -21,7 +21,6 @@ const STORAGE_KEY = 'calmly.settings.v1';
 
 function systemDefaults(): Settings {
   const mq = (q: string) => typeof window !== 'undefined' && window.matchMedia?.(q).matches;
-  const browserLang = typeof navigator !== 'undefined' ? navigator.language : 'en';
   return {
     theme: mq('(prefers-contrast: more)') ? 'contrast' : mq('(prefers-color-scheme: dark)') ? 'dark' : 'cream',
     font: 'default',
@@ -29,7 +28,7 @@ function systemDefaults(): Settings {
     spacing: 'relaxed',
     motion: mq('(prefers-reduced-motion: reduce)') ? 'reduced' : 'full',
     density: 'comfortable',
-    lang: browserLang.toLowerCase().startsWith('fr') ? 'fr' : 'en',
+    lang: 'en',
   };
 }
 
