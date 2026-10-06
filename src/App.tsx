@@ -8,6 +8,7 @@ import FocusView from './views/FocusView';
 import LessonsView from './views/LessonsView';
 import CaseStudyView from './views/CaseStudyView';
 import HowItWorksView from './views/HowItWorksView';
+import A11yInspector from './components/A11yInspector';
 import './styles/tokens.css';
 import './styles/base.css';
 
@@ -161,9 +162,10 @@ function CalmlyApp() {
         {currentTab === 'caseStudy' && <CaseStudyView />}
       </main>
 
-      {/* Modals & Panels */}
+      {/* Modals, Panels & Live Inspector */}
       <SettingsPanel open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       {isOnboardingOpen && <OnboardingModal onComplete={() => setIsOnboardingOpen(false)} />}
+      <A11yInspector />
     </div>
   );
 }

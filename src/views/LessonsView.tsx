@@ -7,11 +7,32 @@ interface Props {
   initialLessonId?: string;
 }
 
+/** Formats a text into Bionic Reading (bolding the fixation anchor of each word) */
+function renderBionicText(text: string) {
+  const words = text.split(' ');
+  return words.map((word, wIdx) => {
+    if (!word) return null;
+    const cleanWord = word.trim();
+    // Bionic fixation: bold ~40-50% of the word
+    const mid = Math.ceil(cleanWord.length * 0.45);
+    const head = cleanWord.slice(0, mid);
+    const tail = cleanWord.slice(mid);
+
+    return (
+      <span key={wIdx} className="bionic-word">
+        <strong className="bionic-bold">{head}</strong>
+        <span>{tail}</span>{' '}
+      </span>
+    );
+  });
+}
+
 export default function LessonsView({ initialLessonId }: Props) {
   const t = useT();
   const r = t.reader;
   const { settings } = useSettings();
   const lang = settings.lang;
+  const isFr = lang === 'fr';
 
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(() => {
     if (initialLessonId) {
@@ -23,6 +44,9 @@ export default function LessonsView({ initialLessonId }: Props) {
   // Reading Ruler State
   const [showRuler, setShowRuler] = useState(false);
   const [rulerTop, setRulerTop] = useState(150);
+
+  // Bionic Reading Toggle
+  const [isBionic, setIsBionic] = useState(false);
 
   // Text to Speech State
   const [isPlaying, setIsPlaying] = useState(false);
@@ -137,10 +161,21 @@ export default function LessonsView({ initialLessonId }: Props) {
         </button>
 
         <div className="reader-actions">
+          {/* Bionic Reading Toggle */}
+          <button
+            type="button"
+            className={`btn btn--sm ${isBionic ? 'btn--accent' : 'btn--ghost'}`}
+            onClick={() => setIsBionic(!isBionic)}
+            aria-pressed={isBionic}
+            title={isFr ? "Active la fixation visuelle guidée (Bionic Reading)" : "Toggle Bionic Reading fixation guides"}
+          >
+            ⚡ {isFr ? 'Lecture Bionique' : 'Bionic Reading'}
+          </button>
+
           {/* Reading Ruler Toggle */}
           <button
             type="button"
-            className={`btn btn--sm ${showRuler ? 'btn--primary' : 'btn--ghost'}`}
+            className={`btn btn--sm ${showRuler ? 'btn--accent' : 'btn--ghost'}`}
             onClick={() => setShowRuler(!showRuler)}
             aria-pressed={showRuler}
           >
@@ -177,7 +212,14 @@ export default function LessonsView({ initialLessonId }: Props) {
 
       <article className="reader-article card">
         <header className="reader-header">
-          <span className="course-tag">{activeLesson.course[lang]}</span>
+          <div className="reader-badge-row">
+            <span className="course-tag">{activeLesson.course[lang]}</span>
+            {isBionic && (
+              <span className="badge badge--accent">
+                ⚡ {isFr ? 'Mode Bionique Actif' : 'Bionic Reading On'}
+              </span>
+            )}
+          </div>
           <h1>{activeLesson.title[lang]}</h1>
           <span className="read-time-badge">⏱️ {t.lessons.minutes(activeLesson.minutes)}</span>
         </header>
@@ -192,14 +234,14 @@ export default function LessonsView({ initialLessonId }: Props) {
           </ul>
         </div>
 
-        {/* Lesson Paragraphs */}
+        {/* Lesson Paragraphs with optional Bionic Reading support */}
         <div className="lesson-body">
           {activeLesson.paragraphs.map((p, idx) => (
             <p
               key={idx}
               className={`lesson-paragraph ${currentParagraphIdx === idx ? 'highlighted' : ''}`}
             >
-              {p[lang]}
+              {isBionic ? renderBionicText(p[lang]) : p[lang]}
             </p>
           ))}
         </div>
