@@ -1,0 +1,141 @@
+/* ============================================================
+   Calmly design tokens & font faces
+   ============================================================ */
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/Hyperbloom-October/fonts/atkinson-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/Hyperbloom-October/fonts/atkinson-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/Hyperbloom-October/fonts/opendyslexic-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/Hyperbloom-October/fonts/opendyslexic-700.woff2') format('woff2');
+}
+
+:root {
+  /* Default: Warm Cream palette (low visual fatigue) */
+  --bg: #f5f0e6;
+  --surface: #ffffff;
+  --surface-2: #ede6d6;
+  --text: #212c26;
+  --text-muted: #52635a;
+  --border: #d4c9b5;
+  --accent: #2e6252;
+  --accent-contrast: #ffffff;
+  --accent-soft: #d8eae1;
+  --focus-ring: #c44f24;
+  --success: #29774a;
+  --warning: #9e5d00;
+  --shadow: 0 4px 18px rgba(33, 44, 38, 0.06);
+
+  /* Fonts */
+  --font-ui: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-read: var(--font-ui);
+  --font-scale: 1;
+  --text-base: calc(1.0625rem * var(--font-scale));
+  --line-height: 1.65;
+  --letter-spacing: 0;
+  --word-spacing: 0;
+
+  /* Spacing & Sizing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --tap: 44px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 150ms;
+  --dur-2: 300ms;
+}
+
+[data-theme='light'] {
+  --bg: #f6f8fb;
+  --surface: #ffffff;
+  --surface-2: #eaeff6;
+  --text: #192231;
+  --text-muted: #4e5b72;
+  --border: #d2dbe7;
+  --accent: #375bb6;
+  --accent-contrast: #ffffff;
+  --accent-soft: #e1e8fa;
+  --focus-ring: #d94e22;
+}
+
+[data-theme='dark'] {
+  --bg: #151a18;
+  --surface: #1e2523;
+  --surface-2: #28322f;
+  --text: #e6ede8;
+  --text-muted: #a3b5ad;
+  --border: #35433e;
+  --accent: #86ceab;
+  --accent-contrast: #0d1e16;
+  --accent-soft: #233930;
+  --focus-ring: #ffaa75;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='contrast'] {
+  --bg: #000000;
+  --surface: #000000;
+  --surface-2: #141414;
+  --text: #ffffff;
+  --text-muted: #ffffff;
+  --border: #ffffff;
+  --accent: #ffea55;
+  --accent-contrast: #000000;
+  --accent-soft: #333300;
+  --focus-ring: #00eeff;
+  --shadow: none;
+}
+
+[data-font='hyperlegible'] {
+  --font-read: 'Atkinson Hyperlegible', var(--font-ui);
+  --font-ui: 'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+
+[data-font='dyslexic'] {
+  --font-read: 'OpenDyslexic', sans-serif;
+  --font-ui: 'OpenDyslexic', sans-serif;
+  --letter-spacing: 0.03em;
+  --word-spacing: 0.08em;
+}
+
+[data-spacing='normal'] { --line-height: 1.5; }
+[data-spacing='relaxed'] { --line-height: 1.8; }
+[data-spacing='airy'] { --line-height: 2.15; --word-spacing: 0.12em; }
+
+[data-motion='reduced'] * {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+}
