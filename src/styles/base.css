@@ -1131,6 +1131,167 @@ p { margin-top: 0; margin-bottom: 1rem; }
   font-weight: 600;
 }
 
+/* Garden Top Header Pill */
+.garden-header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.95rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.garden-header-pill:hover,
+.garden-header-pill:focus-visible {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.garden-pill-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+/* Garden Milestones Roadmap */
+.garden-milestones {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border);
+  overflow-x: auto;
+}
+
+.garden-milestone-item {
+  flex: 1;
+  min-width: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.4rem 0.3rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.garden-milestone-item.unlocked {
+  opacity: 0.9;
+  background: var(--surface-2);
+}
+
+.garden-milestone-item.active {
+  opacity: 1;
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+  font-weight: 700;
+}
+
+.garden-milestone-item .milestone-icon {
+  font-size: 1.1rem;
+}
+
+.garden-milestone-item .milestone-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.garden-milestone-item .milestone-req {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   Later Tasks Section & Separated Cards
+   ============================================================ */
+
+.later-tasks-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--border);
+}
+
+.later-tasks-section .collapse-btn {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.later-tasks-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.later-task-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.later-task-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.later-task-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.later-task-header .task-icon {
+  font-size: 2.2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.later-task-header h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.later-task-header .due-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.task-steps-count {
+  margin: 0;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+
 /* ============================================================
    Live A11y & Contrast Inspector Widget
    ============================================================ */

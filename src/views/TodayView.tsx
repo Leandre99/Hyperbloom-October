@@ -3,7 +3,7 @@ import { tasks, type Task } from '../data/content';
 import { useSettings } from '../settings/SettingsContext';
 import { useT } from '../i18n';
 import MoodCheckIn from '../components/MoodCheckIn';
-import GrowthGarden from '../components/GrowthGarden';
+import GrowthGarden, { getGardenStage } from '../components/GrowthGarden';
 import AddTaskModal from '../components/AddTaskModal';
 
 interface Props {
@@ -66,17 +66,32 @@ export default function TodayView({ onStartFocus, onOpenLesson }: Props) {
   const nextUnfinishedStep = activeSteps.find((s) => !completedSteps.includes(s.id));
 
   const isHardDay = energyLevel !== null && energyLevel <= 1;
+  const gardenStage = getGardenStage(completedSteps.length, lang === 'fr');
 
   return (
     <div className="view today-view">
-      <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+      <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1>{t.today.greeting(t.today.defaultName)}</h1>
           <p className="lead">{t.today.subtitle}</p>
         </div>
-        <button className="btn btn--primary" onClick={() => setIsAddModalOpen(true)}>
-          ➕ {t.addTask.btn}
-        </button>
+        <div className="header-actions" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <a
+            href="#garden-section"
+            className="garden-header-pill"
+            aria-label={lang === 'fr' ? 'Accéder à mon jardin botanique' : 'Jump to my botanical garden'}
+          >
+            <span className="garden-pill-icon">{gardenStage.icon}</span>
+            <span className="garden-pill-text">
+              {lang === 'fr'
+                ? `Jardin : Stade ${gardenStage.level}/5 (${gardenStage.title}) • ${completedSteps.length} étape${completedSteps.length > 1 ? 's' : ''}`
+                : `Garden: Stage ${gardenStage.level}/5 (${gardenStage.title}) • ${completedSteps.length} step${completedSteps.length > 1 ? 's' : ''}`}
+            </span>
+          </a>
+          <button className="btn btn--primary" onClick={() => setIsAddModalOpen(true)}>
+            ➕ {t.addTask.btn}
+          </button>
+        </div>
       </header>
       {isHardDay && <div className="banner banner--calm">🌱 {t.today.hardDayOn}</div>}
 
