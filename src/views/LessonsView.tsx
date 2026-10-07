@@ -41,6 +41,28 @@ export default function LessonsView({ initialLessonId }: Props) {
     return null;
   });
 
+  // Track completed lessons persisted in localStorage
+  const [completedLessons, setCompletedLessons] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('calmly.completedLessons');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const toggleLessonComplete = (lessonId: string) => {
+    setCompletedLessons((prev) => {
+      const next = prev.includes(lessonId)
+        ? prev.filter((id) => id !== lessonId)
+        : [...prev, lessonId];
+      try {
+        localStorage.setItem('calmly.completedLessons', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  };
+
   // Reading Ruler State
   const [showRuler, setShowRuler] = useState(false);
   const [rulerTop, setRulerTop] = useState(150);
@@ -114,34 +136,51 @@ export default function LessonsView({ initialLessonId }: Props) {
   if (!activeLesson) {
     return (
       <div className="view lessons-catalogue">
-        <header className="page-header">
-          <h1>{t.lessons.title}</h1>
-          <p className="lead">{t.lessons.subtitle}</p>
+        <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <h1>{t.lessons.title}</h1>
+            <p className="lead">{t.lessons.subtitle}</p>
+          </div>
+          <span className="badge badge--accent" style={{ fontSize: '0.9rem', padding: '0.45rem 0.9rem' }}>
+            📚 {completedLessons.length} / {lessons.length} {isFr ? 'leçons terminées' : 'lessons completed'}
+          </span>
         </header>
 
         <div className="lessons-grid">
-          {lessons.map((lesson) => (
-            <div key={lesson.id} className="card lesson-card">
-              <span className="lesson-icon" aria-hidden="true">
-                {lesson.icon}
-              </span>
-              <div className="lesson-content">
-                <span className="course-tag">{lesson.course[lang]}</span>
-                <h3>{lesson.title[lang]}</h3>
-                <span className="read-time-badge">⏱️ {t.lessons.minutes(lesson.minutes)}</span>
+          {lessons.map((lesson) => {
+            const isLessonDone = completedLessons.includes(lesson.id);
+            return (
+              <div key={lesson.id} className="card lesson-card">
+                <span className="lesson-icon" aria-hidden="true">
+                  {lesson.icon}
+                </span>
+                <div className="lesson-content">
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '0.25rem' }}>
+                    <span className="course-tag">{lesson.course[lang]}</span>
+                    {isLessonDone && (
+                      <span className="badge badge--success">
+                        ✓ {isFr ? 'Terminée' : 'Completed'}
+                      </span>
+                    )}
+                  </div>
+                  <h3>{lesson.title[lang]}</h3>
+                  <span className="read-time-badge">⏱️ {t.lessons.minutes(lesson.minutes)}</span>
+                </div>
+                <button
+                  className={`btn ${isLessonDone ? 'btn--soft' : 'btn--primary'}`}
+                  onClick={() => setActiveLesson(lesson)}
+                >
+                  {isLessonDone ? (isFr ? 'Relire la leçon' : 'Review lesson') : t.lessons.open}
+                </button>
               </div>
-              <button
-                className="btn btn--primary"
-                onClick={() => setActiveLesson(lesson)}
-              >
-                {t.lessons.open}
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );
   }
+
+  const isCurrentLessonDone = completedLessons.includes(activeLesson.id);
 
   // Active Reader View
   return (
@@ -214,6 +253,11 @@ export default function LessonsView({ initialLessonId }: Props) {
         <header className="reader-header">
           <div className="reader-badge-row">
             <span className="course-tag">{activeLesson.course[lang]}</span>
+            {isCurrentLessonDone && (
+              <span className="badge badge--success">
+                ✓ {r.finishedDone}
+              </span>
+            )}
             {isBionic && (
               <span className="badge badge--accent">
                 ⚡ {isFr ? 'Mode Bionique Actif' : 'Bionic Reading On'}
@@ -246,10 +290,29 @@ export default function LessonsView({ initialLessonId }: Props) {
           ))}
         </div>
 
-        <footer className="reader-footer">
-          <button className="btn btn--primary" onClick={() => setActiveLesson(null)}>
-            ✓ {r.finished}
-          </button>
+        <footer className="reader-footer" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              className={`btn btn--lg ${isCurrentLessonDone ? 'btn--accent' : 'btn--primary'}`}
+              onClick={() => toggleLessonComplete(activeLesson.id)}
+              aria-pressed={isCurrentLessonDone}
+            >
+              {isCurrentLessonDone ? `✓ ${r.finishedDone}` : `✓ ${r.finished}`}
+            </button>
+
+            <button type="button" className="btn btn--ghost" onClick={() => setActiveLesson(null)}>
+              ← {r.back}
+            </button>
+          </div>
+
+          {isCurrentLessonDone && (
+            <div className="alert alert--success" style={{ margin: 0 }}>
+              {isFr
+                ? 'Bravo ! Cette leçon est validée sans fatigue cognitive. Tu peux la relire quand tu veux.'
+                : 'Great job! This lesson is marked complete without cognitive strain. You can review it anytime.'}
+            </div>
+          )}
         </footer>
       </article>
     </div>

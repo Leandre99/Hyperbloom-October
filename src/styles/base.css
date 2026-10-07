@@ -192,6 +192,17 @@ p { margin-top: 0; margin-bottom: 1rem; }
   background-color: var(--accent-soft);
   color: var(--text);
 }
+.badge--success {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+[data-theme='dark'] .badge--success,
+[data-theme='contrast'] .badge--success {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
 .course-tag {
   font-size: 0.85rem;
   font-weight: 600;
