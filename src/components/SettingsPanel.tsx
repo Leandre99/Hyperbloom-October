@@ -21,8 +21,8 @@ export default function SettingsPanel({ open, onClose }: Props) {
   }, [open]);
 
   const themes: { id: Theme; label: string; icon: string; previewBg: string; previewText: string; desc: string }[] = [
-    { id: 'cream', label: s.themes.cream, icon: '☕', previewBg: '#f5f0e6', previewText: '#212c26', desc: 'Warm paper tint, reduces eyestrain' },
     { id: 'light', label: s.themes.light, icon: '☀️', previewBg: '#ffffff', previewText: '#192231', desc: 'Clean, soft crisp daylight' },
+    { id: 'cream', label: s.themes.cream, icon: '☕', previewBg: '#f5f0e6', previewText: '#212c26', desc: 'Warm paper tint, reduces eyestrain' },
     { id: 'dark', label: s.themes.dark, icon: '🌙', previewBg: '#1e2523', previewText: '#e6ede8', desc: 'Muted slate, restful for dark rooms' },
     { id: 'contrast', label: s.themes.contrast, icon: '⚡', previewBg: '#000000', previewText: '#ffffff', desc: 'Maximum contrast, pure black & white' },
   ];

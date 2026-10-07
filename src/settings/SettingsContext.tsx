@@ -22,7 +22,7 @@ const STORAGE_KEY = 'calmly.settings.v1';
 function systemDefaults(): Settings {
   const mq = (q: string) => typeof window !== 'undefined' && window.matchMedia?.(q).matches;
   return {
-    theme: mq('(prefers-contrast: more)') ? 'contrast' : mq('(prefers-color-scheme: dark)') ? 'dark' : 'cream',
+    theme: mq('(prefers-contrast: more)') ? 'contrast' : 'light',
     font: 'default',
     fontScale: 1,
     spacing: 'relaxed',

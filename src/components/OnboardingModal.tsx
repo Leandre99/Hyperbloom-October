@@ -100,7 +100,7 @@ export default function OnboardingModal({ onComplete }: Props) {
             <div className="choice-group">
               <label className="choice-label">{s.theme}</label>
               <div className="choice__options">
-                {(['cream', 'light', 'dark', 'contrast'] as const).map((thm) => (
+                {(['light', 'cream', 'dark', 'contrast'] as const).map((thm) => (
                   <button
                     key={thm}
                     type="button"
